@@ -68,3 +68,16 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+技术栈：
+    react-hooks
+    typescript
+    styled-component/emotion
+    context/redux
+    axios/react-query
+    antd
+
+工程化：
+    单元测试: jest
+    集成测试
