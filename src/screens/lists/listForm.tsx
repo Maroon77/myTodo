@@ -1,4 +1,5 @@
 import { Button, Form, Input } from 'antd';
+import { AddButton, GreenInput } from 'components/style';
 import styled from 'styled-components'
 
 interface FormItemProps{
@@ -20,6 +21,7 @@ export const ListForm = ({onAdd} : ListFormProps) => {
 
     return (
         <Form
+            form={listForm}
             name="listForm"
             autoComplete="off"
             onFinish={onFinish}
@@ -43,17 +45,3 @@ export const ListForm = ({onAdd} : ListFormProps) => {
         </Form>
     )
 }
-
-const GreenInput = styled(Input)`
-    background: #29c529;
-`
-
-const AddButton = styled(Button)`
-    width: 20rem;
-    height: 5rem;
-    background-color: lightblue;
-    border-radius: 10rem;
-    font-size: 2rem;
-    color: #fff;
-    font-weight: bold;
-`

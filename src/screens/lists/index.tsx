@@ -3,50 +3,68 @@ import { ListForm } from "./listForm"
 import { Header } from "./header"
 import { Lists } from "./lists"
 import { useState } from 'react'
+import { ListModal } from 'components/list-modal'
+import { IList } from "types/lists";
 
 export const List = () => {
-    const [lists, setLists] = useState<{
-        id: number,
-        title: string,
-        description: string,
-        checked: boolean
-    }[]>([
+    const [lists, setLists] = useState<IList[]>([
         {
             id: 1,
             title: "1",
             description: "1",
-            checked: false
+            checked: true
         },
         {
             id: 2,
             title: "2",
             description: "2",
             checked: true
+        },
+        {
+            id: 3,
+            title: "3",
+            description: "3",
+            checked: false
         }
     ])
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editingItem, setEditingItem] =  useState<IList | null>(null);
 
     const onAdd = (values: any) => {
         setLists([...lists, {
-            id: lists.length +2,
+            id: lists.length + 2,
             checked: false,
             ...values
         }])
-        // 清空表单
     }
 
     const onCheckStatusChange = (id: number) => {
-        const item = lists.find(item=> item.id === id)
-        const newItem = {
-            ...item, 
-            checked: !item?.checked
-        }
-        console.log(newItem);
-        // setLists([...lists, newItem])
+        const newItems = lists.map(item => {
+            if(item.id === id){
+                return {
+                    ...item,
+                    checked: !item.checked
+                }
+            }
+            return {...item}
+        })
+        setLists(newItems)
     }
 
     const onDelete = (id: number) => {
+        const newItems = lists.filter(item => item.id !== id)
+        setLists(newItems)
+    }
 
-       
+    const onEdit = (item: IList) => {
+        console.log(item)
+        //TODO: 弹窗
+        setIsModalVisible(true)
+        setEditingItem(item)
+    }
+
+    const close = () => {
+        setIsModalVisible(false)
     }
 
     return (
@@ -56,7 +74,12 @@ export const List = () => {
             <Lists 
                 lists={lists} 
                 onCheckStatusChange={onCheckStatusChange}
-                onDelete={onDelete}/>
+                onDelete={onDelete}
+                onEdit={onEdit}/>
+            <ListModal 
+                isModalVisible={isModalVisible} 
+                editingItem={editingItem}
+                close={close}/>
         </Container>
     )
 }

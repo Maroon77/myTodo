@@ -4,22 +4,16 @@ import {
     EditOutlined
   } from '@ant-design/icons';
 import styled from 'styled-components'
-import { CheckboxChangeEvent } from "antd/lib/checkbox";
-
-interface List{
-    id: number,
-    title: string,
-    description: string,
-    checked: boolean
-}
+import { IList } from "types/lists";
 
 interface ListsProps {
-    lists: List[],
-    onCheckStatusChange?: (checked: number) => void
-    onDelete?: (id: number) => void
+    lists: IList[],
+    onCheckStatusChange?: (checked: number) => void,
+    onDelete?: (id: number) => void,
+    onEdit?: (item: IList) => void
 }
 
-export const Lists = ({ lists, onCheckStatusChange, onDelete }: ListsProps) => {
+export const Lists = ({ lists, onCheckStatusChange, onDelete, onEdit }: ListsProps) => {
 
     const changeCheckStatus = (id: number) => {
         onCheckStatusChange?.(id)
@@ -29,6 +23,9 @@ export const Lists = ({ lists, onCheckStatusChange, onDelete }: ListsProps) => {
         onDelete?.(id)
     }
 
+    const editItem = (item: IList) => {
+        onEdit?.(item)
+    }
 
     return (
         <div>
@@ -41,7 +38,7 @@ export const Lists = ({ lists, onCheckStatusChange, onDelete }: ListsProps) => {
                                 <Text checked={item.checked}>title #{item.title}</Text>    
                             </div>
                             <div>
-                                <Button type="link">
+                                <Button type="link" onClick={() => editItem(item)}>
                                     <EditOutlined 
                                         style={{color: 'green', fontSize: '1.8rem', marginRight: '1rem'}}
                                     />
