@@ -6,35 +6,39 @@ import { useEffect, useState } from 'react'
 import { ListModal } from 'components/list-modal'
 import { IList } from "types/lists";
 import { useQuery } from 'react-query'
+import { useDocumentTitle } from 'utils'
+import { ErrorBox } from 'components/lib'
+import { useLists } from './util'
 
 const API_URL = "http://localhost:3001"
 
 export const List = () => {
+    useDocumentTitle('列表')
+
     const [lists, setLists] = useState<IList[]>([])
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingItem, setEditingItem] =  useState<IList | null>(null);
 
-    // useEffect(() => {
+    // TODO: 使用react query实现异步数据请求
+    const { isLoading, error, data: mylist } = useLists();
+    // const { mutateAsync, error: isAddError, isLoading: isAddLoading } = useAddList()
 
-    // }, [])
+    const fetchLists = () =>  fetch(`${API_URL}/lists`)
+        .then(res => res.json())
+        .then(data => {
+            setLists(data)
+        })
 
-    const { isLoading, error, data: listsArr } = useQuery('lists', async () =>
-        // fetch(`${API_URL}/lists`)
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         setLists(data)
-        //     })
-        {
-            const response = await fetch(`${API_URL}/lists`)
-            if(!response.ok){
-                throw new Error('not ok')
-            }
-            return response.json()
-        }
-       
-    )
+    useEffect(() => {
+        fetchLists()
+    }, [])
 
     const onAdd = (values: any) => {
+        // TODO：使用react query实现异步添加数据
+        // mutateAsync({...values, checked: false}).then(() => {
+        //     // 重置表单？
+        // })
+
         setLists([...lists, {
             id: lists.length + 2,
             checked: false,
@@ -55,16 +59,17 @@ export const List = () => {
         setLists(newItems)
     }
 
-    const onDelete = (id: number) => {
-        const newItems = lists.filter(item => item.id !== id)
-        setLists(newItems)
-    }
-
     const onEdit = (item: IList) => {
         console.log(item)
         //TODO: 弹窗
         setIsModalVisible(true)
         setEditingItem(item)
+    }
+
+    const onDelete = (id: number) => {
+        // const newItems = lists.filter(item => item.id !== id)
+        // setLists(newItems)
+        fetchLists()
     }
 
     const close = () => {
@@ -73,13 +78,12 @@ export const List = () => {
 
     if (isLoading) return <h1>loading...</h1>
  
-    if (error) return <h1>An error has occurred: </h1>
+    if (error) return <ErrorBox error={error} />
 
     return (
         <Container>
             <Header />
             <ListForm onAdd={ onAdd }/>
-            {JSON.stringify(listsArr)}
             <Lists 
                 lists={lists} 
                 onCheckStatusChange={onCheckStatusChange}

@@ -1,10 +1,12 @@
 import { Form, FormItemProps, Modal } from "antd"
 import { AddButton, GreenInput } from "components/style";
+import { useEffect } from "react";
 import { IList } from "types/lists";
 
 export const ListModal = ({isModalVisible, editingItem, close}: {
     isModalVisible: boolean,
-    editingItem: IList | null,
+    // editingItem: IList | null,
+    editingItem: any,
     close: () => void
 }) => {
     const [editForm] = Form.useForm();
@@ -14,9 +16,15 @@ export const ListModal = ({isModalVisible, editingItem, close}: {
         // TODO: 请求接口修改数据，刷新列表
         // close()
     };
+
+    //当editingItem或者editForm变化时，重置表单
+    // useEffect(() => {
+    //     editForm.setFields(editingItem)
+    // }, [editForm, editingItem])
     
     return (
         <Modal 
+            forceRender={true}
             title="edit" 
             visible={isModalVisible} 
             onCancel={close}

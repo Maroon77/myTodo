@@ -38,6 +38,7 @@ export const ListForm = ({onAdd} : ListFormProps) => {
                 <GreenInput placeholder='description' />
             </Form.Item>
             <Form.Item>
+                {/* <AddButton type="primary" htmlType="submit" loading={addLoading}> */}
                 <AddButton type="primary" htmlType="submit">
                     Add
                 </AddButton>

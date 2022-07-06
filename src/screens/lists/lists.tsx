@@ -13,18 +13,38 @@ interface ListsProps {
     onEdit?: (item: IList) => void
 }
 
+const API_URL = "http://localhost:3001"
+
 export const Lists = ({ lists, onCheckStatusChange, onDelete, onEdit }: ListsProps) => {
 
-    const changeCheckStatus = (id: number) => {
+    const changeCheckStatus = ({id, checked} : {id: number, checked: boolean}) => {
+        fetch(`${API_URL}/lists/${id}`, {
+            method: 'PATCH',
+            // body: {
+            //     checked
+            // }
+        })
+        .then(res => res.json())
+        .then(data => {
+            // TODO: 删除成功，刷新列表
+            onDelete?.(id)
+        })
         onCheckStatusChange?.(id)
-    }
-
-    const deleteItem = (id: number) => {
-        onDelete?.(id)
     }
 
     const editItem = (item: IList) => {
         onEdit?.(item)
+    }
+
+    const deleteItem = (id: number) => {
+        fetch(`${API_URL}/lists/${id}`, {
+            method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then(data => {
+            // TODO: 删除成功，刷新列表
+            onDelete?.(id)
+        })
     }
 
     return (
