@@ -39,24 +39,26 @@ export const List = () => {
         //     // 重置表单？
         // })
 
-        setLists([...lists, {
-            id: lists.length + 2,
-            checked: false,
-            ...values
-        }])
+        // setLists([...lists, {
+        //     id: lists.length + 2,
+        //     checked: false,
+        //     ...values
+        // }])
+        fetchLists()
     }
 
     const onCheckStatusChange = (id: number) => {
-        const newItems = lists.map(item => {
-            if(item.id === id){
-                return {
-                    ...item,
-                    checked: !item.checked
-                }
-            }
-            return {...item}
-        })
-        setLists(newItems)
+        // const newItems = lists.map(item => {
+        //     if(item.id === id){
+        //         return {
+        //             ...item,
+        //             checked: !item.checked
+        //         }
+        //     }
+        //     return {...item}
+        // })
+        // setLists(newItems)
+        fetchLists()
     }
 
     const onEdit = (item: IList) => {

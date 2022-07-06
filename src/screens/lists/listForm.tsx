@@ -11,12 +11,25 @@ interface ListFormProps {
     onAdd: (values: FormItemProps) => void
 }
 
+const API_URL = "http://localhost:3001"
+
 export const ListForm = ({onAdd} : ListFormProps) => {
     const [listForm] = Form.useForm();
 
     const onFinish = (values: FormItemProps) => {
         listForm.resetFields();
-        onAdd(values)
+        fetch(`${API_URL}/lists`, {
+            method: 'POST',
+            headers: {
+                "Content-Type":  "application/json",
+            },
+            body: JSON.stringify(values)
+        })
+        .then(res => res.json())
+        .then(data => {
+            // TODO: 添加成功，刷新列表
+           onAdd(values)
+        })
     };
 
     return (

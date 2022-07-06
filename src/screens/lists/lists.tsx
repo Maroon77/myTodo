@@ -17,19 +17,20 @@ const API_URL = "http://localhost:3001"
 
 export const Lists = ({ lists, onCheckStatusChange, onDelete, onEdit }: ListsProps) => {
 
-    const changeCheckStatus = ({id, checked} : {id: number, checked: boolean}) => {
+    const changeCheckStatus = (id: number, checked: boolean) => {
         fetch(`${API_URL}/lists/${id}`, {
             method: 'PATCH',
-            // body: {
-            //     checked
-            // }
+            // PS: 1、当method为非"GET"时，需要设置headers里的content-type，且body的参数需要JSON.stringify
+            headers: {
+                "Content-Type":  "application/json",
+            },
+            body: JSON.stringify({checked: !checked})
         })
         .then(res => res.json())
         .then(data => {
-            // TODO: 删除成功，刷新列表
-            onDelete?.(id)
+            // TODO: 修改状态成功，刷新列表
+            onCheckStatusChange?.(id)
         })
-        onCheckStatusChange?.(id)
     }
 
     const editItem = (item: IList) => {
@@ -54,7 +55,7 @@ export const Lists = ({ lists, onCheckStatusChange, onDelete, onEdit }: ListsPro
                     <div key={item.id}>
                         <Item >
                             <div>
-                                <Checkbox checked={item.checked} onChange={() => changeCheckStatus(item.id)}/>
+                                <Checkbox checked={item.checked} onChange={() => changeCheckStatus(item.id, item.checked)}/>
                                 <Text checked={item.checked}>title #{item.title}</Text>    
                             </div>
                             <div>
