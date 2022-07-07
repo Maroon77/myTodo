@@ -1,8 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { IList } from "types/lists";
 import { http } from "utils/http";
+import { useDeleteConfig, useEditConfig, useAddConfig } from "utils/use-optimistic-options";
 
 const API_URL = "http://localhost:3001"
+const queryKey = ["lists"]
 
 /**
  * 获取列表
@@ -21,19 +23,13 @@ export const useLists = () => {
  * @returns 
  */
 export const useAddList = () => {
-    const queryClient = useQueryClient()
     return useMutation(
         (params: Partial<IList>) => 
         http('lists', {
             method: "POST",
             data: params
         }),
-        {
-            onSuccess: () => {
-                console.log("add success");
-                queryClient.invalidateQueries('lists')
-            }
-        }
+        useAddConfig(queryKey)
     )
 }
 
@@ -42,18 +38,12 @@ export const useAddList = () => {
  * @returns 
  */
 export const useDeleteList = (() => {
-    const queryClient = useQueryClient();
     return useMutation(
-        ({ id }: { id: number }) => 
+        ({ id }: Partial<IList>) => 
         http(`lists/${id}`, {
             method: 'DELETE'
         }),
-        {
-            onSuccess: () => {
-                console.log('delete success');
-                queryClient.invalidateQueries('lists')
-            }
-        }
+        useDeleteConfig(queryKey)
     )
 })
 
@@ -64,28 +54,13 @@ export const useDeleteList = (() => {
  * @returns 
  */
 export const useEditList = () => {
-    const queryClient = useQueryClient()
-    const queryKey = ["lists"]
     return useMutation(
         (params: Partial<IList>) => 
             http(`lists/${params.id}`, {
                 method: "PATCH",
                 data: params
             }),
-            {
-                onSuccess: () => queryClient.invalidateQueries(queryKey),
-                //实现乐观更新
-                // async onMutate(target){
-                //     const previousLists = queryClient.getQueryData(queryKey)
-                //     queryClient.setQueryData(queryKey, (old?: IList[]) => {
-                //         return old?.map( list => list.id === target.id ? {...list, ...target}: list) || []
-                //     })
-                //     return {previousLists}
-                // },
-                // onError(error, newItem, context){
-                //     queryClient.setQueryData(queryKey, context?.previousLists)
-                // }
-            }
+            useEditConfig(queryKey)
         )
 }
 
