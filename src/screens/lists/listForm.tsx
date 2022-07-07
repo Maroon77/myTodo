@@ -1,28 +1,17 @@
-import { Button, Form, Input } from 'antd';
+import { Form } from 'antd';
 import { AddButton, GreenInput } from 'components/style';
-import styled from 'styled-components'
-import { http } from 'utils/http';
+import { IList } from 'types/lists';
+import { useAddList } from './util';
 
-interface FormItemProps{
-    title: string,
-    description: string
-}
-
-interface ListFormProps {
-    onAdd: (values: FormItemProps) => void
-}
-
-export const ListForm = ({onAdd} : ListFormProps) => {
+export const ListForm = () => {
     const [listForm] = Form.useForm();
+    const { mutateAsync: addMutate, isLoading}= useAddList()
 
-    const onFinish = (values: FormItemProps) => {
-        listForm.resetFields();
-        http(`lists`, {
-            method: 'POST',
-            data: values
-        }).then(data => {
-            // TODO: 添加成功，刷新列表
-           onAdd(values)
+    const onFinish = (values: Partial<IList>) => {
+        // 警告: 自定义hook不能在函数里使用！！！
+        // const { mutateAsync: addMutate}= useAddList()
+        addMutate(values).then(() => {
+            listForm.resetFields();
         })
     };
 
@@ -45,8 +34,7 @@ export const ListForm = ({onAdd} : ListFormProps) => {
                 <GreenInput placeholder='description' />
             </Form.Item>
             <Form.Item>
-                {/* <AddButton type="primary" htmlType="submit" loading={addLoading}> */}
-                <AddButton type="primary" htmlType="submit">
+                <AddButton type="primary" htmlType="submit" loading={isLoading}>
                     Add
                 </AddButton>
             </Form.Item>

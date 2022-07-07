@@ -5,39 +5,16 @@ import {
   } from '@ant-design/icons';
 import styled from 'styled-components'
 import { IList } from "types/lists";
-import { http } from "utils/http";
+import { useDeleteList, useEditList } from "./util";
 
 interface ListsProps {
     lists: IList[],
-    onCheckStatusChange?: (checked: number) => void,
-    onDelete?: (id: number) => void,
-    onEdit?: (item: IList) => void
+    loading: boolean,
 }
 
-export const Lists = ({ lists, onCheckStatusChange, onDelete, onEdit }: ListsProps) => {
-
-    const changeCheckStatus = (id: number, checked: boolean) => {
-        http(`lists/${id}`, {
-            method: 'PATCH',
-            data: {checked: !checked}
-        }).then(data => {
-            // TODO: 修改状态成功，刷新列表
-            onCheckStatusChange?.(id)
-        })
-    }
-
-    const editItem = (item: IList) => {
-        onEdit?.(item)
-    }
-
-    const deleteItem = (id: number) => {
-        http(`lists/${id}`, {
-            method: 'DELETE'
-        }).then(data => {
-            // TODO: 删除成功，刷新列表
-            onDelete?.(id)
-        })
-    }
+export const Lists = ({ lists, loading }: ListsProps) => {
+    const { mutateAsync: deleteMutate } = useDeleteList()
+    const { mutateAsync: editMutate } = useEditList()
 
     return (
         <div>
@@ -46,16 +23,16 @@ export const Lists = ({ lists, onCheckStatusChange, onDelete, onEdit }: ListsPro
                     <div key={item.id}>
                         <Item >
                             <div>
-                                <Checkbox checked={item.checked} onChange={() => changeCheckStatus(item.id, item.checked)}/>
+                                <Checkbox checked={item.checked} onChange={() => editMutate({id: item.id, checked: !item.checked})}/>
                                 <Text checked={item.checked}>title #{item.title}</Text>    
                             </div>
                             <div>
-                                <Button type="link" onClick={() => editItem(item)}>
+                                {/* <Button type="link" onClick={() => editMutate(item)}>
                                     <EditOutlined 
                                         style={{color: 'green', fontSize: '1.8rem', marginRight: '1rem'}}
                                     />
-                                </Button>
-                                <Button type="link" onClick={() => deleteItem(item.id)}>
+                                </Button> */}
+                                <Button type="link" onClick={() => deleteMutate({id: item.id})}>
                                     <DeleteOutlined 
                                         style={{color: 'pink', fontSize: '1.8rem', marginRight: '1rem'}} 
                                     />
