@@ -5,6 +5,7 @@ import {
   } from '@ant-design/icons';
 import styled from 'styled-components'
 import { IList } from "types/lists";
+import { http } from "utils/http";
 
 interface ListsProps {
     lists: IList[],
@@ -13,21 +14,13 @@ interface ListsProps {
     onEdit?: (item: IList) => void
 }
 
-const API_URL = "http://localhost:3001"
-
 export const Lists = ({ lists, onCheckStatusChange, onDelete, onEdit }: ListsProps) => {
 
     const changeCheckStatus = (id: number, checked: boolean) => {
-        fetch(`${API_URL}/lists/${id}`, {
+        http(`lists/${id}`, {
             method: 'PATCH',
-            // PS: 1、当method为非"GET"时，需要设置headers里的content-type，且body的参数需要JSON.stringify
-            headers: {
-                "Content-Type":  "application/json",
-            },
-            body: JSON.stringify({checked: !checked})
-        })
-        .then(res => res.json())
-        .then(data => {
+            data: {checked: !checked}
+        }).then(data => {
             // TODO: 修改状态成功，刷新列表
             onCheckStatusChange?.(id)
         })
@@ -38,11 +31,9 @@ export const Lists = ({ lists, onCheckStatusChange, onDelete, onEdit }: ListsPro
     }
 
     const deleteItem = (id: number) => {
-        fetch(`${API_URL}/lists/${id}`, {
+        http(`lists/${id}`, {
             method: 'DELETE'
-        })
-        .then(res => res.json())
-        .then(data => {
+        }).then(data => {
             // TODO: 删除成功，刷新列表
             onDelete?.(id)
         })

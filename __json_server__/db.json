@@ -1,12 +1,6 @@
 {
   "lists": [
     {
-      "id": 3,
-      "title": "3",
-      "description": "3",
-      "checked": false
-    },
-    {
       "id": 1,
       "title": "1",
       "description": "1",
@@ -22,7 +16,7 @@
       "title": "77",
       "description": "777",
       "id": 5,
-      "checked": false
+      "checked": true
     },
     {
       "title": "999",
@@ -34,6 +28,11 @@
       "title": "555",
       "description": "555555",
       "id": 8
+    },
+    {
+      "title": "222",
+      "description": "22222",
+      "id": 9
     }
   ]
 }

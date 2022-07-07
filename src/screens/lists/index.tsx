@@ -9,8 +9,8 @@ import { useQuery } from 'react-query'
 import { useDocumentTitle } from 'utils'
 import { ErrorBox } from 'components/lib'
 import { useLists } from './util'
+import { http } from 'utils/http'
 
-const API_URL = "http://localhost:3001"
 
 export const List = () => {
     useDocumentTitle('列表')
@@ -20,14 +20,12 @@ export const List = () => {
     const [editingItem, setEditingItem] =  useState<IList | null>(null);
 
     // TODO: 使用react query实现异步数据请求
-    const { isLoading, error, data: mylist } = useLists();
+    // const { isLoading, error, data: mylist } = useLists();
     // const { mutateAsync, error: isAddError, isLoading: isAddLoading } = useAddList()
 
-    const fetchLists = () =>  fetch(`${API_URL}/lists`)
-        .then(res => res.json())
-        .then(data => {
-            setLists(data)
-        })
+    const fetchLists = () => {
+        http('lists').then(data => setLists(data))
+    }
 
     useEffect(() => {
         fetchLists()
@@ -78,9 +76,9 @@ export const List = () => {
         setIsModalVisible(false)
     }
 
-    if (isLoading) return <h1>loading...</h1>
+    // if (isLoading) return <h1>loading...</h1>
  
-    if (error) return <ErrorBox error={error} />
+    // if (error) return <ErrorBox error={error} />
 
     return (
         <Container>

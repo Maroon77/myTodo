@@ -6,13 +6,13 @@ const API_URL = "http://localhost:3001"
 export const useLists = () => {
     // 使用泛型useQuery<IList[], Error>解决后面error.message报错的问题
     // 也可以使用类型守卫和ErrorBox组件解决
-    return useQuery<IList[]>('lists', async () => {
-        const response = await fetch(`${API_URL}/lists`)
-        if(!response.ok){
-            throw new Error('not ok')
-        }
-        return response.json()
-    })
+    // return useQuery<IList[]>('lists', async () => {
+    //     const response = await fetch(`${API_URL}/lists`)
+    //     if(!response.ok){
+    //         throw new Error('not ok')
+    //     }
+    //     return response.json()
+    // })
   };
 
 // export const useEditList = () => {

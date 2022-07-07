@@ -1,6 +1,7 @@
 import { Button, Form, Input } from 'antd';
 import { AddButton, GreenInput } from 'components/style';
 import styled from 'styled-components'
+import { http } from 'utils/http';
 
 interface FormItemProps{
     title: string,
@@ -11,22 +12,15 @@ interface ListFormProps {
     onAdd: (values: FormItemProps) => void
 }
 
-const API_URL = "http://localhost:3001"
-
 export const ListForm = ({onAdd} : ListFormProps) => {
     const [listForm] = Form.useForm();
 
     const onFinish = (values: FormItemProps) => {
         listForm.resetFields();
-        fetch(`${API_URL}/lists`, {
+        http(`lists`, {
             method: 'POST',
-            headers: {
-                "Content-Type":  "application/json",
-            },
-            body: JSON.stringify(values)
-        })
-        .then(res => res.json())
-        .then(data => {
+            data: values
+        }).then(data => {
             // TODO: 添加成功，刷新列表
            onAdd(values)
         })
