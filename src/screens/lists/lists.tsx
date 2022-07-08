@@ -1,4 +1,4 @@
-import { Button, Checkbox } from "antd"
+import { Button, Checkbox, Modal } from "antd"
 import {
     DeleteOutlined,
     EditOutlined
@@ -14,7 +14,20 @@ interface ListsProps {
 
 export const Lists = ({ lists, loading }: ListsProps) => {
     const { mutateAsync: deleteMutate } = useDeleteList()
+    // TODO：了解mutate和mutateAsync的区别
+    // const { mutate: editMutate } = useEditList()
     const { mutateAsync: editMutate } = useEditList()
+
+    const confirmDelete = (id: number) => {
+        Modal.confirm({
+          title: "确定删除这一项吗?",
+          content: "点击确定删除",
+          okText: "确定",
+          onOk() {
+            deleteMutate(id);
+          },
+        });
+      };
 
     return (
         <div>
@@ -32,12 +45,12 @@ export const Lists = ({ lists, loading }: ListsProps) => {
                                         style={{color: 'green', fontSize: '1.8rem', marginRight: '1rem'}}
                                     />
                                 </Button> */}
-                                <Button type="link" onClick={() => deleteMutate({id: item.id})}>
+                                {/* <Button type="link" onClick={() => deleteMutate(item.id)}> */}
+                                <Button type="link" onClick={() => confirmDelete(item.id)}>
                                     <DeleteOutlined 
                                         style={{color: 'pink', fontSize: '1.8rem', marginRight: '1rem'}} 
                                     />
                                 </Button>
-                                
                             </div>
                         </Item>
                         <Desc checked={item.checked}>description #{item.description}</Desc>

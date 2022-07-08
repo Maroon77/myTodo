@@ -1,21 +1,19 @@
 {
   "lists": [
     {
-      "title": "444",
+      "title": "11",
+      "description": "111",
+      "id": 1
+    },
+    {
+      "title": "22",
+      "description": "222",
+      "id": 2
+    },
+    {
+      "title": "44",
       "description": "4444",
-      "id": 20,
-      "checked": true
-    },
-    {
-      "title": "555",
-      "description": "55555",
-      "id": 21,
-      "checked": true
-    },
-    {
-      "title": "66",
-      "description": "666",
-      "id": 22
+      "id": 4
     }
   ]
 }

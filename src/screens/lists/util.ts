@@ -39,7 +39,7 @@ export const useAddList = () => {
  */
 export const useDeleteList = (() => {
     return useMutation(
-        ({ id }: Partial<IList>) => 
+        (id: number) => 
         http(`lists/${id}`, {
             method: 'DELETE'
         }),
