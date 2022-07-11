@@ -1,50 +1,40 @@
-import { Form, FormItemProps, Modal } from "antd"
+import { Form, Modal } from "antd"
 import { AddButton, GreenInput } from "components/style";
-import { useEffect } from "react";
+import { useEditList, useModal } from "screens/lists/util";
 import { IList } from "types/lists";
 
-const API_URL = "http://localhost:3001"
-
-export const ListModal = ({isModalVisible, editingItem, close}: {
-    isModalVisible: boolean,
-    // editingItem: IList | null,
-    editingItem?: any,
-    close: () => void
+export const ListModal = ({ modalOpen, editingItem, onClose }: {
+    modalOpen: boolean, 
+    editingItem: IList | null,
+    onClose: () => void
 }) => {
+    // const {
+    //     close,
+    // } = useModal()
+
     const [editForm] = Form.useForm();
-    // TODO: 透传editingItem时，id可能为空，如何解决（通过请求接口获取单个item？）
-    // const {id, ...rest} = editingItem
+    const { mutateAsync: editMutate } = useEditList()
 
-
-    const onFinish = () => {
-        editForm.resetFields();
-        // TODO: 请求接口修改数据，刷新列表
-        // fetch(`${API_URL}/lists/${id}`, {
-        //     method: 'PATCH',
-        //     // PS: 1、当method为非"GET"时，需要设置headers里的content-type，且body的参数需要JSON.stringify
-        //     headers: {
-        //         "Content-Type":  "application/json",
-        //     },
-        //     body: JSON.stringify(rest)
-        // })
-        // .then(res => res.json())
-        // .then(data => {
-        //     // TODO: 修改数据成功，关闭窗口，刷新列表
-        //     close()
-        // })
+    const onFinish = (values: any) => {
+        editMutate({...editingItem, ...values}).then(() => {
+            editForm.resetFields();
+            onClose()
+            // close()
+        })
     };
 
-    //当editingItem或者editForm变化时，重置表单
-    // useEffect(() => {
-    //     editForm.setFields(editingItem)
-    // }, [editForm, editingItem])
-    
+    const closeModal = () => {
+        editForm.resetFields();
+        onClose()
+    }
+
     return (
-        <Modal 
+        <Modal  
+            visible={modalOpen} 
             title="edit" 
-            visible={isModalVisible} 
-            onCancel={close}
+            onCancel={closeModal}
             footer={null}>
+                <h1>modal</h1>
             <Form
                 form={editForm}
                 name="listForm"
@@ -52,24 +42,24 @@ export const ListModal = ({isModalVisible, editingItem, close}: {
                 onFinish={onFinish}
                 style={{textAlign: "center"}}
             >
-            <Form.Item
-                name="title"
-                initialValue={editingItem?.title}
-            >
-                <GreenInput placeholder='Title'/>
-            </Form.Item>
-            <Form.Item
-                name="description"
-                initialValue={editingItem?.description}
-            >
-                <GreenInput placeholder='description'/>
-            </Form.Item>
-            <Form.Item>
-                <AddButton type="primary" htmlType="submit">
-                    confirm
-                </AddButton>
-            </Form.Item>
-        </Form>
+                <Form.Item
+                    name="title"
+                    initialValue={editingItem?.title}
+                >
+                    <GreenInput placeholder='Title'/>
+                </Form.Item>
+                <Form.Item
+                    name="description"
+                    initialValue={editingItem?.description}
+                >
+                    <GreenInput placeholder='description'/>
+                </Form.Item>
+                <Form.Item>
+                    <AddButton type="primary" htmlType="submit">
+                        confirm
+                    </AddButton>
+                </Form.Item> 
+            </Form>
       </Modal>
     )
 }

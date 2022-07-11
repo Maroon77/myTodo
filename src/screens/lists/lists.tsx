@@ -5,18 +5,24 @@ import {
   } from '@ant-design/icons';
 import styled from 'styled-components'
 import { IList } from "types/lists";
-import { useDeleteList, useEditList } from "./util";
+import { useDeleteList, useEditList, useModal } from "./util";
+import { ListModal } from "components/list-modal";
+import { useState } from "react";
 
 interface ListsProps {
     lists: IList[],
-    loading: boolean,
 }
 
-export const Lists = ({ lists, loading }: ListsProps) => {
+export const Lists = ({ lists }: ListsProps) => {
     const { mutateAsync: deleteMutate } = useDeleteList()
     // TODO：了解mutate和mutateAsync的区别
     // const { mutate: editMutate } = useEditList()
     const { mutateAsync: editMutate } = useEditList()
+    // const { startEdit, open, modalOpen } = useModal();
+
+    const [modalOpen, setModalOpen] = useState(false)
+    const [editingItem,setEditingItem] = useState<IList | null>(null)
+
 
     const confirmDelete = (id: number) => {
         Modal.confirm({
@@ -28,6 +34,16 @@ export const Lists = ({ lists, loading }: ListsProps) => {
           },
         });
       };
+    
+    const editItem = (item: IList) => {
+        setModalOpen(true)
+        setEditingItem(item)
+    }
+
+    const closeModal = () => {
+        setModalOpen(false)
+        setEditingItem(null)
+    }
 
     return (
         <div>
@@ -40,11 +56,11 @@ export const Lists = ({ lists, loading }: ListsProps) => {
                                 <Text checked={item.checked}>title #{item.title}</Text>    
                             </div>
                             <div>
-                                {/* <Button type="link" onClick={() => editMutate(item)}>
+                                <Button type="link" onClick={() => editItem(item)}>
                                     <EditOutlined 
                                         style={{color: 'green', fontSize: '1.8rem', marginRight: '1rem'}}
                                     />
-                                </Button> */}
+                                </Button>
                                 {/* <Button type="link" onClick={() => deleteMutate(item.id)}> */}
                                 <Button type="link" onClick={() => confirmDelete(item.id)}>
                                     <DeleteOutlined 
@@ -57,6 +73,7 @@ export const Lists = ({ lists, loading }: ListsProps) => {
                     </div>
                 ))
             }
+            <ListModal modalOpen={modalOpen} editingItem={editingItem} onClose={closeModal}/>
         </div>
     )
 }

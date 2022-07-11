@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery, useMutation } from "react-query";
 import { IList } from "types/lists";
 import { http } from "utils/http";
@@ -62,7 +63,7 @@ export const useEditList = () => {
             }),
             useEditConfig(queryKey)
         )
-}
+} 
 
 export const useList = (id?: number) => {
     return useQuery<IList>(["list", {id}], async () => {
@@ -74,4 +75,25 @@ export const useList = (id?: number) => {
     }, {
         enabled: !!id   //或者Boolean(id), 这个配置的意思是只有当id有值的时候，才会触发useList里的请求方法
     })
+}
+
+export const useModal = () => {
+    const [editingItem, setEditingItem] = useState<IList | null>(null)
+    const [modalOpen, setModalOpen] =  useState(false)
+
+    const open = () => setModalOpen(true)
+
+    const close = () => setModalOpen(false)
+
+    const startEdit = (item: IList) => {
+        setEditingItem(item)
+    }
+
+    return {
+        modalOpen,
+        open,
+        close,
+        startEdit,
+        editingItem
+    }
 }
