@@ -16,12 +16,12 @@ interface ListsProps {
 export const Lists = ({ lists }: ListsProps) => {
     const { mutateAsync: deleteMutate } = useDeleteList()
     // TODO：了解mutate和mutateAsync的区别
-    // const { mutate: editMutate } = useEditList()
     const { mutateAsync: editMutate } = useEditList()
     // const { startEdit, open, modalOpen } = useModal();
 
-    const [modalOpen, setModalOpen] = useState(false)
-    const [editingItem,setEditingItem] = useState<IList | null>(null)
+    const { open } = useModal()
+    // const [modalOpen, setModalOpen] = useState(false)
+    // const [editingItem,setEditingItem] = useState<IList | null>(null)
 
 
     const confirmDelete = (id: number) => {
@@ -35,15 +35,15 @@ export const Lists = ({ lists }: ListsProps) => {
         });
       };
     
-    const editItem = (item: IList) => {
-        setModalOpen(true)
-        setEditingItem(item)
-    }
+    // const editItem = (item: IList) => {
+    //     setModalOpen(true)
+    //     setEditingItem(item)
+    // }
 
-    const closeModal = () => {
-        setModalOpen(false)
-        setEditingItem(null)
-    }
+    // const closeModal = () => {
+    //     setModalOpen(false)
+    //     setEditingItem(null)
+    // }
 
     return (
         <div>
@@ -56,7 +56,7 @@ export const Lists = ({ lists }: ListsProps) => {
                                 <Text checked={item.checked}>title #{item.title}</Text>    
                             </div>
                             <div>
-                                <Button type="link" onClick={() => editItem(item)}>
+                                <Button type="link" onClick={() => open()}>
                                     <EditOutlined 
                                         style={{color: 'green', fontSize: '1.8rem', marginRight: '1rem'}}
                                     />
@@ -73,7 +73,7 @@ export const Lists = ({ lists }: ListsProps) => {
                     </div>
                 ))
             }
-            <ListModal modalOpen={modalOpen} editingItem={editingItem} onClose={closeModal}/>
+            <ListModal />
         </div>
     )
 }

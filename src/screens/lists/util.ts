@@ -81,7 +81,9 @@ export const useModal = () => {
     const [editingItem, setEditingItem] = useState<IList | null>(null)
     const [modalOpen, setModalOpen] =  useState(false)
 
-    const open = () => setModalOpen(true)
+    const open = () => {
+        setModalOpen(true)
+    }
 
     const close = () => setModalOpen(false)
 

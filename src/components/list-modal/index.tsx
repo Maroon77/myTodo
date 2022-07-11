@@ -3,29 +3,37 @@ import { AddButton, GreenInput } from "components/style";
 import { useEditList, useModal } from "screens/lists/util";
 import { IList } from "types/lists";
 
-export const ListModal = ({ modalOpen, editingItem, onClose }: {
-    modalOpen: boolean, 
-    editingItem: IList | null,
-    onClose: () => void
-}) => {
-    // const {
-    //     close,
-    // } = useModal()
+export const ListModal = (
+    // { modalOpen, editingItem, onClose }: {
+    //     modalOpen?: boolean, 
+    //     editingItem?: IList | null,
+    //     onClose?: () => void
+    // }
+) => {
+    const {
+        modalOpen,
+        close,
+    } = useModal()
+
+    const editingItem = {
+        title: 'HH',
+        description: 'hhhh'
+    }
 
     const [editForm] = Form.useForm();
     const { mutateAsync: editMutate } = useEditList()
 
     const onFinish = (values: any) => {
-        editMutate({...editingItem, ...values}).then(() => {
-            editForm.resetFields();
-            onClose()
-            // close()
-        })
+        // editMutate({...editingItem, ...values}).then(() => {
+        //     editForm.resetFields();
+        //     // onClose()
+        //     close()
+        // })
     };
 
     const closeModal = () => {
         editForm.resetFields();
-        onClose()
+        // onClose()
     }
 
     return (
@@ -34,7 +42,6 @@ export const ListModal = ({ modalOpen, editingItem, onClose }: {
             title="edit" 
             onCancel={closeModal}
             footer={null}>
-                <h1>modal</h1>
             <Form
                 form={editForm}
                 name="listForm"
