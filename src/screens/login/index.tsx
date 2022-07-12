@@ -1,21 +1,28 @@
 import { Button, Form, Input } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
+import { ILogin } from 'types/login';
+import { useLogin } from './utils';
+
+const localStorageKey = "__auth_provider_token__";
 
 export const Login = () => {
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
-    };
+    const { mutateAsync: loginMutate } = useLogin()
 
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    };
+    const onFinish = (values: ILogin) => {
+        loginMutate(values).then(data => {
+            window.localStorage.setItem(localStorageKey, data.user.token || "");
+        })
+    }
+
+    const logout = () => {
+        window.localStorage.removeItem(localStorageKey);
+    } 
 
     return (
         <Form
             name="login"
             autoComplete="off"
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             >
             <Form.Item
                 label="Username"

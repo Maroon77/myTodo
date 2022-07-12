@@ -4,7 +4,7 @@ import { IList } from "types/lists";
 import { http } from "utils/http";
 import { useDeleteConfig, useEditConfig, useAddConfig } from "utils/use-optimistic-options";
 
-const API_URL = "http://localhost:3001"
+// const API_URL = "http://localhost:3001"
 const queryKey = ["lists"]
 
 /**
@@ -51,7 +51,6 @@ export const useDeleteList = (() => {
 /**
  * 编辑列表
  * 改变状态
- * TODO:弹窗改变数据
  * @returns 
  */
 export const useEditList = () => {
@@ -65,17 +64,17 @@ export const useEditList = () => {
         )
 } 
 
-export const useList = (id?: number) => {
-    return useQuery<IList>(["list", {id}], async () => {
-        const response = await fetch(`${API_URL}/list/${id}`)
-        if(!response.ok){
-            throw new Error('not ok')
-        }
-        return response.json()
-    }, {
-        enabled: !!id   //或者Boolean(id), 这个配置的意思是只有当id有值的时候，才会触发useList里的请求方法
-    })
-}
+// export const useList = (id?: number) => {
+//     return useQuery<IList>(["list", {id}], async () => {
+//         const response = await fetch(`${API_URL}/list/${id}`)
+//         if(!response.ok){
+//             throw new Error('not ok')
+//         }
+//         return response.json()
+//     }, {
+//         enabled: !!id   //或者Boolean(id), 这个配置的意思是只有当id有值的时候，才会触发useList里的请求方法
+//     })
+// }
 
 export const useModal = () => {
     const [editingItem, setEditingItem] = useState<IList | null>(null)
