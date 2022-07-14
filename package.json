@@ -88,7 +88,8 @@
     ]
   },
   "devDependencies": {
-    "@types/styled-components": "^5.1.25"
+    "@types/styled-components": "^5.1.25",
+    "msw": "^0.44.0"
   },
   "jest": {
     "roots": [

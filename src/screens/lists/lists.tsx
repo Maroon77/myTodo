@@ -49,7 +49,7 @@ export const Lists = ({ lists }: ListsProps) => {
         <div>
             {
                 lists.map( item => (
-                    <div key={item.id}>
+                    <div key={item.id} data-testid="list-item">
                         <Item >
                             <div>
                                 <Checkbox checked={item.checked} onChange={() => editMutate({id: item.id, checked: !item.checked})}/>

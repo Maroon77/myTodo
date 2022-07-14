@@ -29,8 +29,7 @@ function App() {
 
   return (
     <div className="App">
-       { JSON.stringify(data) }
-      <ErrorBoundary fallbackRender={FullPageErrorFallback}>
+      {/* <ErrorBoundary fallbackRender={FullPageErrorFallback}>
         {
           data?.user?.token ? 
           <Container>
@@ -47,7 +46,13 @@ function App() {
             </ShadowCard>
           </Container>
         }
-      </ErrorBoundary>
+      </ErrorBoundary> */}
+      <Container>
+          <Routes>
+            <Route path={"/lists"} element={<List />} />
+            <Route path="*" element={<Navigate to={'/lists'} replace={true} />}></Route>
+          </Routes>
+      </Container>
     </div>
   );
 }
