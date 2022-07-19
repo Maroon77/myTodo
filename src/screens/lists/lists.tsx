@@ -52,7 +52,7 @@ export const Lists = ({ lists }: ListsProps) => {
                     <div key={item.id} data-testid="list-item">
                         <Item >
                             <div>
-                                <Checkbox checked={item.checked} onChange={() => editMutate({id: item.id, checked: !item.checked})}/>
+                                <Checkbox data-testid="check-icon" checked={item.checked} onChange={() => editMutate({id: item.id, checked: !item.checked})}/>
                                 <Text checked={item.checked}>title #{item.title}</Text>    
                             </div>
                             <div>
@@ -62,7 +62,7 @@ export const Lists = ({ lists }: ListsProps) => {
                                     />
                                 </Button>
                                 {/* <Button type="link" onClick={() => deleteMutate(item.id)}> */}
-                                <Button type="link" onClick={() => confirmDelete(item.id)}>
+                                <Button type="link" onClick={() => confirmDelete(item.id)} data-testid="delete-icon">
                                     <DeleteOutlined 
                                         style={{color: 'pink', fontSize: '1.8rem', marginRight: '1rem'}} 
                                     />

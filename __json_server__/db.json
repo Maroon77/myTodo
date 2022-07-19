@@ -1,14 +1,10 @@
 {
   "lists": [
     {
-      "title": "22",
-      "description": "222",
-      "id": 2
-    },
-    {
       "title": "44",
       "description": "4444",
-      "id": 4
+      "id": 4,
+      "checked": false
     },
     {
       "title": "55",

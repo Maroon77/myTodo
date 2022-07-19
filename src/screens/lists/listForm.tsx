@@ -21,6 +21,7 @@ export const ListForm = () => {
             name="listForm"
             autoComplete="off"
             onFinish={onFinish}
+            data-testid="list-form"
             style={{textAlign: "center"}}
             >
             <Form.Item
@@ -34,7 +35,7 @@ export const ListForm = () => {
                 <GreenInput placeholder='description' />
             </Form.Item>
             <Form.Item>
-                <AddButton type="primary" htmlType="submit" loading={isLoading}>
+                <AddButton type="primary" htmlType="submit" loading={isLoading} data-testid="add-btn">
                     Add
                 </AddButton>
             </Form.Item>

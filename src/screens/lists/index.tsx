@@ -22,7 +22,6 @@ export const List = () => {
                 isLoading ? <Spin size={"large"} /> : <Lists lists={mylist} />
             }
             <ErrorBox error={error} />
-            
         </Container>
     )
 }
